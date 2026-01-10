@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: './tests',
 
   webServer: {
-    command: 'npm run dev',
+    command: 'npm run start',
     port: 3000,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
