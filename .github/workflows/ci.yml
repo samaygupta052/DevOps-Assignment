@@ -78,4 +78,3 @@ jobs:
       - name: Build frontend image
         run: |
           docker build -t frontend:${IMAGE_TAG} frontend
-
