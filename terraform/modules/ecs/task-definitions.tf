@@ -9,20 +9,26 @@ resource "aws_ecs_task_definition" "backend" {
   container_definitions = jsonencode([{
     name  = "backend"
     image = var.backend_image
+
     portMappings = [{
       containerPort = 8000
     }]
+
+    secrets = [{
+      name      = "APP_ENV"
+      valueFrom = "arn:aws:secretsmanager:${var.aws_region}:${var.aws_account_id}:secret:devops/backend/env"
+    }]
+
     logConfiguration = {
       logDriver = "awslogs"
       options = {
-        awslogs-group  = aws_cloudwatch_log_group.backend.name
-        awslogs-region = var.aws_region
+        awslogs-group         = aws_cloudwatch_log_group.backend.name
+        awslogs-region        = var.aws_region
         awslogs-stream-prefix = "ecs"
       }
     }
   }])
 }
-
 
 resource "aws_ecs_task_definition" "frontend" {
   family                   = "frontend"
@@ -35,18 +41,21 @@ resource "aws_ecs_task_definition" "frontend" {
   container_definitions = jsonencode([{
     name  = "frontend"
     image = var.frontend_image
+
     portMappings = [{
       containerPort = 3000
     }]
+
     environment = [{
       name  = "NEXT_PUBLIC_API_URL"
       value = var.backend_url
     }]
+
     logConfiguration = {
       logDriver = "awslogs"
       options = {
-        awslogs-group  = aws_cloudwatch_log_group.frontend.name
-        awslogs-region = var.aws_region
+        awslogs-group         = aws_cloudwatch_log_group.frontend.name
+        awslogs-region        = var.aws_region
         awslogs-stream-prefix = "ecs"
       }
     }

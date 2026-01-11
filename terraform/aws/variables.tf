@@ -7,10 +7,13 @@ variable "project_name" {
 }
 
 variable "backend_image" {
-  description = "Backend Docker image (ECR)"
+  description = "Backend ECR image URL"
 }
 
 variable "frontend_image" {
-  description = "Frontend Docker image (ECR)"
+  description = "Frontend ECR image URL"
 }
+
+variable "aws_account_id" {}
+variable "image_tag" {}
 
